@@ -1,0 +1,31 @@
+{
+    "name": "BuildingProfileViewer",
+    "version": "0.0.1",
+    "private": true,
+    "scripts": {
+        "start": "gulp"
+    },
+    "browserify": {"transform": ["reactify", "babelify"]},
+    "devDependencies": {
+      "babelify": "^6.4.0",
+      "browser-sync": "^2.11.0",
+      "browserify": "^12.0.1",
+      "gulp": "^3.8.10",
+      "gulp-notify": "^2.1.0",
+      "gulp-util": "^3.0.1",
+      "pretty-hrtime": "^1.0.1",
+      "require-dir": "^0.3.0",
+      "reactify": "^0.16.0",
+      "underscore": "^1.7.0",
+      "vinyl-source-stream": "^1.0.0",
+      "watchify": "^3.6.1"
+    },
+    "dependencies": {
+        "express": "^4.13.3",
+        "express-handlebars": "^2.0.1",
+        "body-parser": "^1.13.3",
+        "material-ui": "^0.14.1",
+        "react": "^0.14.0",
+        "react-dom": "^0.14.0"
+    }
+}
