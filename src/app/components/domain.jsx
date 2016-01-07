@@ -75,7 +75,7 @@ const TagDomain = React.createClass({
         }
         return (
             <Card style={{width: "40%"}}>
-                <CardHeader title={this.props.name} subtitle="Terminal"/>
+                <CardHeader title={"Terminal: "+ this.props.name}/>
                 <Divider />
                 <CardText>
                     {contents}
