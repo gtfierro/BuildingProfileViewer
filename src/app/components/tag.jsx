@@ -88,9 +88,10 @@ const DomainView = React.createClass({
         if (terminal == null) {
             console.log("Unselected terminal");
             this.setState({selectedTerminal: null});
-            return;
+        } else {
+            console.log("got terminal", terminal);
+            this.setState({selectedTerminal: terminal});
         }
-        this.setState({selectedTerminal: terminal});
     },
 
     render() {
@@ -114,7 +115,7 @@ const DomainView = React.createClass({
                     <h3>Terminals</h3>
                     <div style={{display: "flex", flexDirection: "row"}}>
                         {this.props.domain.terminals != null ? <TerminalTable terminals={this.props.domain.terminals} select={this.displayTerminal}/> : <p>None</p>}
-                        {this.state.selectedTerminal != null ? <TagDomain terminal={this.state.selectedTerminal} /> : null}
+                        {this.state.selectedTerminal != null ? <TagDomain {...this.state.selectedTerminal} /> : null}
                     </div>
                     <h3>Subdomains</h3>
                         {this.props.domain.subdomains != null ? subdomainList : <p>None</p>}
