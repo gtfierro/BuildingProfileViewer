@@ -51,8 +51,14 @@ const colorCycle = [
 
 const DomainView = React.createClass({
     getInitialState() {
+        var path = this.props.parentPath;
+        if (path == '/') {
+            path += this.props.domain.root;
+        } else {
+            path += '/' + this.props.domain.root;
+        }
         return {
-            fullPath: this.props.parentPath + '/' + this.props.domain.root,
+            fullPath: path,
             selectedSubdomain: -1,
             childDomain: (<span></span>),
         }
@@ -82,6 +88,11 @@ const DomainView = React.createClass({
         var subdomains = _.map(this.props.domain.subdomains, function(sub) {
             return <ListItem value={sub.id} key={sub.id} path={sub.path} onTouchTap={self.openSubdomain.bind(null, sub)}>{sub.path}</ListItem>
         });
+        var subdomainList = (
+            <SelectableList valueLink={{value: this.state.selectedSubdomain, requestChange: this.handleSubdomainSelect}}>
+                {subdomains}
+            </SelectableList>
+        );
         return (
             <div style={{paddingTop: 20, paddingLeft: 20}}>
               <Card>
@@ -91,9 +102,7 @@ const DomainView = React.createClass({
                     <h3>Terminals</h3>
                         {this.props.domain.terminals != null ? <TerminalTable terminals={this.props.domain.terminals} /> : <p>None</p>}
                     <h3>Subdomains</h3>
-                    <SelectableList valueLink={{value: this.state.selectedSubdomain, requestChange: this.handleSubdomainSelect}}>
-                        {subdomains}
-                    </SelectableList>
+                        {this.props.domain.subdomains != null ? subdomainList : <p>None</p>}
                 </CardText>
               </Card>
               <br />
@@ -117,7 +126,7 @@ const TerminalTable = React.createClass({
         });
         return (
         <Table showRowHover={true} enableSelectAll={false}>
-            <TableHeader>
+            <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
                 <TableRow>
                     <TableHeaderColumn style={{width: "10%"}}>Name</TableHeaderColumn>
                     <TableHeaderColumn>Description</TableHeaderColumn>
@@ -125,7 +134,7 @@ const TerminalTable = React.createClass({
                     <TableHeaderColumn>Domain</TableHeaderColumn>
                 </TableRow>
             </TableHeader>
-            <TableBody>
+            <TableBody displayRowCheckbox={false}>
                 {terminals}
             </TableBody>
         </Table>
