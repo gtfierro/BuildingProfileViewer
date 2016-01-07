@@ -33,15 +33,10 @@ function getColor() {
 }
 
 const colorCycle = [
-    Colors.red100,
-    Colors.pink100,
-    Colors.purple100,
-    Colors.deepPurple100,
     Colors.indigo100,
     Colors.blue100,
     Colors.lightBlue100,
     Colors.cyan100,
-    //Colors.teal100,
     Colors.green100,
     Colors.lightGreen100,
     Colors.lime100,
@@ -49,6 +44,10 @@ const colorCycle = [
     Colors.amber100,
     Colors.orange100,
     Colors.deepOrange100,
+    Colors.pink100,
+    Colors.purple100,
+    Colors.deepPurple100,
+    //Colors.teal100,
 ];
 
 const DomainView = React.createClass({
@@ -147,10 +146,10 @@ const TerminalTable = React.createClass({
         var self = this;
         var terminals = _.map(this.props.terminals, function(term) {
             return (
-                <TableRow key={term.name} selected={self.state.selectedRow == term.name}>
+                <TableRow key={term.name} selected={self.state.selectedRow == term.name} style={{backgroundColor: term.required ? Colors.red200 : "white"}}>
                     <TableRowColumn style={{width: "10%"}}>{term.name}</TableRowColumn>
                     <TableRowColumn style={{wordWrap: 'break-word', whiteSpace: 'normal'}}>{term.description}</TableRowColumn>
-                    <TableRowColumn style={{width: "10%"}}>{term.required ? "True" : "False"}</TableRowColumn>
+                    <TableRowColumn style={{width: "10%"}}>{term.required ? <b>True</b> : "False"}</TableRowColumn>
                     <TableRowColumn>{term.domain == null ? "Unrestricted" : term.domain}</TableRowColumn>
                 </TableRow>
             );
