@@ -1,4 +1,5 @@
 var _ = require('lodash');
+var YAML = require('yamljs');
 import React from 'react';
 import AppBar from 'material-ui/lib/app-bar';
 import MenuItem from 'material-ui/lib/menus/menu-item';
@@ -42,23 +43,23 @@ const colorCycle = [
 ];
 
 const TEST_DATA = {
-    id: "bc419dea-b410-11e5-8769-0cc47a0f7eea",
-    path: "/",
-    subdomains: [
-      {
-       path: "Properties",
-       id: "f25a7500-b410-11e5-8769-0cc47a0f7eea"
-      },
-      {
-        path: "Actuator",
-        id: "15bc3394-b411-11e5-8769-0cc47a0f7eea"
-      },
-      {
-        path: "Metadata",
-        id: "1cc5dbe0-b411-11e5-8769-0cc47a0f7eea"
-      }
-    ]
-};
+        "root": "",
+        "id": "bc419dea-b410-11e5-8769-0cc47a0f7eea",
+        "subdomains": [
+            {
+                "path": "Properties",
+                "id": "f25a7500-b410-11e5-8769-0cc47a0f7eea"
+            },
+            {
+                "path": "Actuator",
+                "id": "15bc3394-b411-11e5-8769-0cc47a0f7eea"
+            },
+            {
+                "path": "Metadata",
+                "id": "d47c01aa-b412-11e5-8769-0cc47a0f7eea"
+            }
+        ]
+    };
 
 const Main = React.createClass({
 
@@ -69,6 +70,8 @@ const Main = React.createClass({
   },
 
   componentWillMount() {
+    var nativeObject = YAML.load('tags.yml');
+    console.log(nativeObject);
   },
 
   _menuItemPressed(e, item) {
@@ -108,5 +111,6 @@ const Main = React.createClass({
     );
   },
 });
+
 
 export default Main;
