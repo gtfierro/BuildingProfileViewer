@@ -1,3 +1,4 @@
+var _ = require('lodash');
 import React from 'react';
 import AppBar from 'material-ui/lib/app-bar';
 import MenuItem from 'material-ui/lib/menus/menu-item';
@@ -5,6 +6,7 @@ import IconMenu from 'material-ui/lib/menus/icon-menu';
 import IconButton from 'material-ui/lib/icon-button';
 import MoreVertIcon from 'material-ui/lib/svg-icons/navigation/more-vert';
 import Paper from 'material-ui/lib/paper';
+import Colors from 'material-ui/lib/styles/colors';
 
 import DomainView from './tag';
 
@@ -12,12 +14,36 @@ import RaisedButton from 'material-ui/lib/raised-button';
 import Dialog from 'material-ui/lib/dialog';
 import ThemeManager from 'material-ui/lib/styles/theme-manager';
 import LightRawTheme from 'material-ui/lib/styles/raw-themes/light-raw-theme';
-import Colors from 'material-ui/lib/styles/colors';
 import FlatButton from 'material-ui/lib/flat-button';
+
+var _colorIndex = 0;
+function getColor() {
+    var ret = _colorIndex;
+    _colorIndex = (_colorIndex + 1) % colorCycle.length;
+    return colorCycle[ret];
+}
+
+const colorCycle = [
+    Colors.red100,
+    Colors.pink100,
+    Colors.purple100,
+    Colors.deepPurple100,
+    Colors.indigo100,
+    Colors.blue100,
+    Colors.lightBlue100,
+    Colors.cyan100,
+    Colors.green100,
+    Colors.lightGreen100,
+    Colors.lime100,
+    Colors.yellow100,
+    Colors.amber100,
+    Colors.orange100,
+    Colors.deepOrange100,
+];
 
 const TEST_DATA = {
     id: "bc419dea-b410-11e5-8769-0cc47a0f7eea",
-    root: "/",
+    path: "/",
     subdomains: [
       {
        path: "Properties",
@@ -49,15 +75,11 @@ const Main = React.createClass({
     console.log("item", item);
   },
 
-  addSubdomain(subdomain) {
-    console.log("add a sub domain", subdomain);
-    var subdomains = this.state.subdomains;
-    subdomains.push(subdomain);
-    this.setState({subdomains: subdomains});
-  },
-
   render() {
-    var subdomainsList = [(<DomainView key={TEST_DATA.id} domain={TEST_DATA} addSubdomain={this.addSubdomain}/>)];
+    var self = this;
+    var subdomainsList = _.map(this.state.subdomains, function(sub) {
+        return <DomainView key={sub.id} domain={sub} color={getColor()} />;
+    });
     return (
       <div>
         <AppBar 
@@ -77,6 +99,7 @@ const Main = React.createClass({
         />
         <br />
         <Paper zdepth={2}>
+          <DomainView key={TEST_DATA.id} domain={TEST_DATA} parentPath=""/>
           {subdomainsList}
         </Paper>
 

@@ -31,7 +31,7 @@ const colorCycle = [
     Colors.blue100,
     Colors.lightBlue100,
     Colors.cyan100,
-    Colors.teal100,
+    //Colors.teal100,
     Colors.green100,
     Colors.lightGreen100,
     Colors.lime100,
@@ -44,7 +44,9 @@ const colorCycle = [
 const DomainView = React.createClass({
     getInitialState() {
         return {
+            fullPath: this.props.parentPath + this.props.domain.path,
             selectedSubdomain: -1,
+            childDomain: (<span></span>),
         }
     },
 
@@ -53,20 +55,22 @@ const DomainView = React.createClass({
     },
 
     openSubdomain(subdomain) {
-        this.props.addSubdomain(subdomain);
+        var child = <DomainView key={subdomain.id} parentPath={this.state.fullPath} domain={subdomain} color={getColor()} />;
+        this.setState({childDomain: child});
     },
 
     render() {
         var self = this;
-        var title = (<b>Path: {this.props.domain.root}</b>);
+        var title = (<b>Path: {this.state.fullPath}</b>);
         var subtitle = (<b>ID: {this.props.domain.id}</b>);
         var subdomains = _.map(this.props.domain.subdomains, function(sub) {
             return <ListItem value={sub.id} key={sub.id} path={sub.path} onTouchTap={self.openSubdomain.bind(null, sub)}>{sub.path}</ListItem>
         });
+        //TODO: DomanView has a naddChild method that puts ONE thing below it. This is how we get the chain
         return (
             <div>
-              <Card>
-                <CardHeader style={{backgroundColor: Colors.teal100}} title={title} subtitle={subtitle} />
+              <Card style={{marginTop: 20, marginLeft: 20, marginRight: 20}}>
+                <CardHeader style={{backgroundColor: this.props.color == null ? Colors.teal100 : this.props.color }} title={title} subtitle={subtitle} />
                 <Divider />
                 <CardText>
                     <h3>Subdomains</h3>
@@ -75,6 +79,8 @@ const DomainView = React.createClass({
                     </SelectableList>
                 </CardText>
               </Card>
+              <br />
+              {this.state.childDomain}
             </div>
         )
     },
