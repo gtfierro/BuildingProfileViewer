@@ -21,6 +21,8 @@ import TableHeaderColumn from 'material-ui/lib/table/table-header-column';
 import TableRow from 'material-ui/lib/table/table-row';
 import TableRowColumn from 'material-ui/lib/table/table-row-column';
 
+import TagDomain from './domain';
+
 var SelectableList = SelectableContainerEnhance(List);
 
 var _colorIndex = 0;
@@ -60,6 +62,7 @@ const DomainView = React.createClass({
         return {
             fullPath: path,
             selectedSubdomain: -1,
+            selectedTerminal: null,
             childDomain: (<span></span>),
         }
     },
@@ -81,6 +84,15 @@ const DomainView = React.createClass({
         }
     },
 
+    displayTerminal(terminal) {
+        if (terminal == null) {
+            console.log("Unselected terminal");
+            this.setState({selectedTerminal: null});
+            return;
+        }
+        this.setState({selectedTerminal: terminal});
+    },
+
     render() {
         var self = this;
         var title = (<b>Path: {this.state.fullPath}</b>);
@@ -100,7 +112,10 @@ const DomainView = React.createClass({
                 <Divider />
                 <CardText>
                     <h3>Terminals</h3>
-                        {this.props.domain.terminals != null ? <TerminalTable terminals={this.props.domain.terminals} /> : <p>None</p>}
+                    <div style={{display: "flex", flexDirection: "row"}}>
+                        {this.props.domain.terminals != null ? <TerminalTable terminals={this.props.domain.terminals} select={this.displayTerminal}/> : <p>None</p>}
+                        {this.state.selectedTerminal != null ? <TagDomain terminal={this.state.selectedTerminal} /> : null}
+                    </div>
                     <h3>Subdomains</h3>
                         {this.props.domain.subdomains != null ? subdomainList : <p>None</p>}
                 </CardText>
@@ -113,10 +128,25 @@ const DomainView = React.createClass({
 });
 
 const TerminalTable = React.createClass({
+    getInitialState() {
+        return {selectedRow: -1}
+    },
+
+    handleRowSelect(index) {
+        if (index.length == 0) { // unselect
+            this.setState({selectedRow: -1});
+        } else {
+            var rowName = this.props.terminals[index].name;
+            this.setState({selectedRow: rowName});
+        }
+        this.props.select(this.props.terminals[index]);
+    },
+
     render() {
+        var self = this;
         var terminals = _.map(this.props.terminals, function(term) {
             return (
-                <TableRow key={term.name}> 
+                <TableRow key={term.name} selected={self.state.selectedRow == term.name}>
                     <TableRowColumn style={{width: "10%"}}>{term.name}</TableRowColumn>
                     <TableRowColumn style={{wordWrap: 'break-word', whiteSpace: 'normal'}}>{term.description}</TableRowColumn>
                     <TableRowColumn style={{width: "10%"}}>{term.required ? "True" : "False"}</TableRowColumn>
@@ -125,7 +155,7 @@ const TerminalTable = React.createClass({
             );
         });
         return (
-        <Table showRowHover={true} enableSelectAll={false}>
+        <Table enableSelectAll={false} selectable={true} onRowSelection={this.handleRowSelect}>
             <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
                 <TableRow>
                     <TableHeaderColumn style={{width: "10%"}}>Name</TableHeaderColumn>
@@ -134,7 +164,7 @@ const TerminalTable = React.createClass({
                     <TableHeaderColumn>Domain</TableHeaderColumn>
                 </TableRow>
             </TableHeader>
-            <TableBody displayRowCheckbox={false}>
+            <TableBody displayRowCheckbox={false} showRowHover={true}>
                 {terminals}
             </TableBody>
         </Table>
