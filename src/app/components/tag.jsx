@@ -76,7 +76,6 @@ const DomainView = React.createClass({
             return doc.id === subdomain.id;
         });
         if (actualDoc.length == 1) {
-          console.log("FOUND", actualDoc[0]);
           var child = <DomainView key={subdomain.id} parentPath={this.state.fullPath} domain={actualDoc[0]} color={getColor()} />;
           this.setState({childDomain: child});
         } else {
@@ -84,11 +83,9 @@ const DomainView = React.createClass({
     },
 
     displayTerminal(terminal) {
-        if (terminal == null) {
-            console.log("Unselected terminal");
+        if (terminal == null || terminal == this.state.selectedTerminal) {
             this.setState({selectedTerminal: null});
         } else {
-            console.log("got terminal", terminal);
             this.setState({selectedTerminal: terminal});
         }
     },
@@ -105,6 +102,7 @@ const DomainView = React.createClass({
                 {subdomains}
             </SelectableList>
         );
+        var sortedTerminals = _.sortBy(this.props.domain.terminals, function(t) { return !t.required; });
         return (
             <div style={{paddingTop: 20, paddingLeft: 20}}>
               <Card>
@@ -113,7 +111,7 @@ const DomainView = React.createClass({
                 <CardText>
                     <h3>Terminals</h3>
                     <div style={{display: "flex", flexDirection: "row"}}>
-                        {this.props.domain.terminals != null ? <TerminalTable terminals={this.props.domain.terminals} select={this.displayTerminal}/> : <p>None</p>}
+                        {this.props.domain.terminals != null ? <TerminalTable terminals={sortedTerminals} select={this.displayTerminal}/> : <p>None</p>}
                         {this.state.selectedTerminal != null ? <TagDomain {...this.state.selectedTerminal} /> : null}
                     </div>
                     <h3>Subdomains</h3>
@@ -133,13 +131,13 @@ const TerminalTable = React.createClass({
     },
 
     handleRowSelect(index) {
-        if (index.length == 0) { // unselect
+        if (index.length == 0 || this.props.terminals[index[0]].name == this.state.selectedRow) { // unselect
             this.setState({selectedRow: -1});
         } else {
-            var rowName = this.props.terminals[index].name;
+            var rowName = this.props.terminals[index[0]].name;
             this.setState({selectedRow: rowName});
         }
-        this.props.select(this.props.terminals[index]);
+        this.props.select(this.props.terminals[index[0]]);
     },
 
     render() {
@@ -147,7 +145,7 @@ const TerminalTable = React.createClass({
         var sortedTerminals = _.sortBy(this.props.terminals, function(t) { return !t.required; });
         var terminals = _.map(sortedTerminals, function(term) {
             return (
-                <TableRow key={term.name} selected={self.state.selectedRow == term.name} style={{backgroundColor: term.required ? Colors.red200 : "white"}}>
+                <TableRow key={term.name} selected={self.state.selectedRow == term.name}>
                     <TableRowColumn style={{width: "20%"}}>{term.name}</TableRowColumn>
                     <TableRowColumn style={{wordWrap: 'break-word', whiteSpace: 'normal'}}>{term.description}</TableRowColumn>
                     <TableRowColumn style={{width: "10%"}}>{term.required ? <b>True</b> : "False"}</TableRowColumn>
