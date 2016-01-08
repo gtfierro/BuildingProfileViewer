@@ -8,8 +8,10 @@ import IconButton from 'material-ui/lib/icon-button';
 import MoreVertIcon from 'material-ui/lib/svg-icons/navigation/more-vert';
 import Paper from 'material-ui/lib/paper';
 import Colors from 'material-ui/lib/styles/colors';
+import {Link} from 'react-router';
 
 import DomainView from './tag';
+import Menu from './menu';
 
 import RaisedButton from 'material-ui/lib/raised-button';
 import Dialog from 'material-ui/lib/dialog';
@@ -85,21 +87,7 @@ const Main = React.createClass({
     });
     return (
       <div>
-        <AppBar 
-            title="Building Profile Viewer"
-            iconElementLeft={
-                <IconMenu
-                    iconButtonElement={
-                        <IconButton><MoreVertIcon /></IconButton>
-                    }
-                    targetOrigin={{horizontal: 'right', vertical: 'top'}}
-                    anchorOrigin={{horizontal: 'right', vertical: 'top'}}
-                >
-                  <MenuItem primaryText="Home" onTouchTap={this._menuItemPressed} />
-                </IconMenu>
-                
-            }
-        />
+        <Menu />
         <br />
         <Paper zdepth={2}>
           <DomainView key={TEST_DATA.id} domain={TEST_DATA} parentPath=""/>
