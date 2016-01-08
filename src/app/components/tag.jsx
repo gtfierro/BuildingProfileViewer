@@ -144,10 +144,11 @@ const TerminalTable = React.createClass({
 
     render() {
         var self = this;
-        var terminals = _.map(this.props.terminals, function(term) {
+        var sortedTerminals = _.sortBy(this.props.terminals, function(t) { return !t.required; });
+        var terminals = _.map(sortedTerminals, function(term) {
             return (
                 <TableRow key={term.name} selected={self.state.selectedRow == term.name} style={{backgroundColor: term.required ? Colors.red200 : "white"}}>
-                    <TableRowColumn style={{width: "10%"}}>{term.name}</TableRowColumn>
+                    <TableRowColumn style={{width: "20%"}}>{term.name}</TableRowColumn>
                     <TableRowColumn style={{wordWrap: 'break-word', whiteSpace: 'normal'}}>{term.description}</TableRowColumn>
                     <TableRowColumn style={{width: "10%"}}>{term.required ? <b>True</b> : "False"}</TableRowColumn>
                     <TableRowColumn>{term.domain == null ? "Unrestricted" : term.domain}</TableRowColumn>
@@ -158,7 +159,7 @@ const TerminalTable = React.createClass({
         <Table enableSelectAll={false} selectable={true} onRowSelection={this.handleRowSelect}>
             <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
                 <TableRow>
-                    <TableHeaderColumn style={{width: "10%"}}>Name</TableHeaderColumn>
+                    <TableHeaderColumn style={{width: "20%"}}>Name</TableHeaderColumn>
                     <TableHeaderColumn>Description</TableHeaderColumn>
                     <TableHeaderColumn style={{width: "10%"}}>Required</TableHeaderColumn>
                     <TableHeaderColumn>Domain</TableHeaderColumn>
