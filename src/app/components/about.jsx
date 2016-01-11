@@ -16,7 +16,7 @@ import CardText from 'material-ui/lib/card/card-text';
 const About = React.createClass({
     render() {
         return (
-            <div>
+            <div style={{width: 1200, margin: "auto"}}>
                 <Menu />
                 <br />
                 <Paper zdepth={2}>

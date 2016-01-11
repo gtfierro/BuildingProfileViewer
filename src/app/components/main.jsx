@@ -86,7 +86,7 @@ const Main = React.createClass({
         return <DomainView key={sub.id} domain={sub} color={getColor()} />;
     });
     return (
-      <div>
+      <div style={{width: 1200, margin: "auto"}}>
         <Menu />
         <br />
         <Paper zdepth={2}>
