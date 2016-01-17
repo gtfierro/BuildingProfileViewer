@@ -10,9 +10,8 @@ injectTapEventPlugin();
 
 ReactDOM.render((
     <Router history={browserHistory}>
-        <Route path="/">
-            <Route path="home" component={Main} />
-            <Route path="about" component={About} />
-        </Route>
+        <Route path="/" component={Main} />
+        <Route path="/home" component={Main} />
+        <Route path="about" component={About} />
     </Router>
 ), document.getElementById('app'));
