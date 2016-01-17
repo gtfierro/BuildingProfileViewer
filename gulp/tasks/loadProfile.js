@@ -9,8 +9,15 @@ gulp.task('loadProfile', function() {
         if (err) { // doesn't exist?
             // git clone it
             git.clone('https://github.com/gtfierro/BuildingProfile', null, function(err) {
-                if (err) {handleErrors(err);}
-                return;
+                if (err) {
+                  return console.log(err);
+                }
+            });
+        } else { // update it
+            git.pull('origin', 'master', {cwd: "./BuildingProfile"}, function(err) {
+                if (err) {
+                  return console.log(err);
+                }
             });
         }
         // now read the files
