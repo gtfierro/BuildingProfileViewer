@@ -71,11 +71,6 @@ const Main = React.createClass({
     };
   },
 
-  componentWillMount() {
-    var nativeObject = YAML.load('tags.yml');
-    console.log(nativeObject);
-  },
-
   _menuItemPressed(e, item) {
     console.log("item", item);
   },

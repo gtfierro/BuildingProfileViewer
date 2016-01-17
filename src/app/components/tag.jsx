@@ -23,6 +23,8 @@ import TableRowColumn from 'material-ui/lib/table/table-row-column';
 
 import TagDomain from './domain';
 
+const TAGS_DATA = require('../../www/tags.json');
+
 var SelectableList = SelectableContainerEnhance(List);
 
 var _colorIndex = 0;
@@ -72,7 +74,7 @@ const DomainView = React.createClass({
 
     openSubdomain(subdomain) {
         // find the domain
-        var actualDoc = _.filter(MORE_DATA, function(doc) {
+        var actualDoc = _.filter(TAGS_DATA, function(doc) {
             return doc.id === subdomain.id;
         });
         if (actualDoc.length == 1) {
@@ -170,140 +172,5 @@ const TerminalTable = React.createClass({
         );
     },
 });
-
-const MORE_DATA = [
-    {
-        "terminals": [
-            {
-                "required": true,
-                "name": "UnitofMeasure",
-                "description": "Engineering units for the stream\n"
-            },
-            {
-                "default": "ms",
-                "domain": "c677c8f6-b411-11e5-8769-0cc47a0f7eea",
-                "required": false,
-                "name": "UnitofTime",
-                "description": "The units for the stream's timestamps.\n"
-            },
-            {
-                "domain": "25fc8d20-b412-11e5-8769-0cc47a0f7eea",
-                "required": true,
-                "name": "StreamType",
-                "description": "The data type of the stream. Numeric is any integer (signed or unsigned) or float. An Object is any JSON-serializable construct\n"
-            },
-            {
-                "default": "UTC",
-                "domain": "85ed1664-b412-11e5-8769-0cc47a0f7eea",
-                "required": false,
-                "name": "Timezone",
-                "description": "The timezone of this stream's timestamps\n"
-            }
-        ],
-        "root": "Properties",
-        "id": "f25a7500-b410-11e5-8769-0cc47a0f7eea"
-    },
-    {
-        "terminals": [
-            {
-                "required": true,
-                "name": "SourceName",
-                "description": "This is the top-level name used by the plotter to index the data sources\n"
-            }
-        ],
-        "root": "Metadata",
-        "id": "d47c01aa-b412-11e5-8769-0cc47a0f7eea",
-        "subdomains": [
-            {
-                "path": "Location",
-                "id": "e7264c48-b412-11e5-8769-0cc47a0f7eea"
-            },
-            {
-                "path": "Point",
-                "id": "ec5b1ef0-b412-11e5-8769-0cc47a0f7eea"
-            },
-            {
-                "path": "Device",
-                "id": "ef6af0c0-b412-11e5-8769-0cc47a0f7eea"
-            }
-        ]
-    },
-    {
-        "terminals": [
-            {
-                "required": false,
-                "name": "Building",
-                "description": "The name of the building containing the stream. Use the full name of the building\n"
-            },
-            {
-                "required": false,
-                "name": "Floor",
-                "description": "The name of the floor containing the stream. Use a number whenever possible\n"
-            },
-            {
-                "required": false,
-                "name": "Room",
-                "description": "The name of the room containing the stream. Use a number whenever possible\n"
-            },
-            {
-                "domain": "cd6aa1d6-b413-11e5-8769-0cc47a0f7eea",
-                "required": false,
-                "name": "Exposure",
-                "description": "The cardinal direction this stream is concerned with\n"
-            }
-        ],
-        "root": "Location",
-        "id": "e7264c48-b412-11e5-8769-0cc47a0f7eea"
-    },
-    {
-        "terminals": [
-            {
-                "domain": "6a8e4670-b414-11e5-8769-0cc47a0f7eea",
-                "required": true,
-                "name": "Type",
-                "description": "Describes at a high level the role of the stream\n"
-            },
-            {
-                "domain": "47857292-b415-11e5-8769-0cc47a0f7eea",
-                "required": false,
-                "name": "Sensor",
-                "description": "What the transducer associated with this stream measures\n"
-            },
-            {
-                "required": false,
-                "name": "State",
-                "description": "What device setting this stream reflects\n"
-            },
-            {
-                "required": false,
-                "name": "Setpoint",
-                "description": "Which writable setting this stream influences\n"
-            },
-            {
-                "required": false,
-                "name": "Command",
-                "description": "Which writable setting this stream can actuate\n"
-            }
-        ],
-        "root": "Point",
-        "id": "ec5b1ef0-b412-11e5-8769-0cc47a0f7eea"
-    },
-    {
-        "terminals": [
-            {
-                "required": false,
-                "name": "Manufacturer",
-                "description": "The name of the manufacturer for this device\n"
-            },
-            {
-                "required": false,
-                "name": "Model",
-                "description": "The model of the device\n"
-            }
-        ],
-        "root": "Device",
-        "id": "ef6af0c0-b412-11e5-8769-0cc47a0f7eea"
-    }
-]
 
 export default DomainView;
