@@ -15,7 +15,7 @@ var source       = require('vinyl-source-stream');
 var config       = require('../config').browserify;
 var babelify     = require('babelify');
 
-gulp.task('browserify', function(callback) {
+gulp.task('browserify', ['loadProfile'], function(callback) {
 
   var bundleQueue = config.bundleConfigs.length;
 
